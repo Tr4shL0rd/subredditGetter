@@ -3,7 +3,7 @@ Usage: ./subredditGetter [OPTIONS]
     -title     : Outputs the title of post
     -url       : Outputs the url of post
     -both      : Outputs both the url and title of post
-    -search    : Search for spicific title
+    -search    : Search for specific title
     -subreddit : Searches in the specified subreddit 
     -limit     : Limits the number of posts to be outputted
     -old       : Links refers to old reddit
