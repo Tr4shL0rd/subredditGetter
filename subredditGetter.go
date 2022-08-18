@@ -15,7 +15,7 @@ import (
 )
 
 var url string = "www.reddit.com"
-var progVersion = [2]string{"subredditGetter.go v0.0.5", "v0.0.5"}
+var progVersion = [2]string{"subredditGetter.go v0.1.5", "v0.1.5"}
 
 // for file reading
 func check(e error) {
