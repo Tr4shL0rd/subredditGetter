@@ -15,7 +15,9 @@ import (
 )
 
 var url string = "www.reddit.com"
-var progVersion = [2]string{"subredditGetter.go v0.1.5", "v0.1.5"}
+var progName string = "subredditGetter.go"
+var progVersionString string = "v0.1.5"
+var progVersion = [2]string{progName + progVersionString, progVersionString}
 
 // for file reading
 func check(e error) {
@@ -41,19 +43,12 @@ func envFill() {
 	fmt.Scanln(&password)
 	fmt.Println("")
 	f, err := os.Create(".env")
-	if err != nil {
-		log.Fatal(err)
-	}
+	check(err)
 	defer f.Close()
 	_, err2 := f.WriteString("client_id=" + clientID + "\n" + "client_secret=" + clientSecret + "\n" + "username=" + username + "\n" + "password=" + password)
-	if err2 != nil {
-		log.Fatal(err)
-	}
-	if err == nil {
-		log.Println("Successfully created .env file")
-		godotenv.Load()
-	}
-
+	check(err2)
+	log.Println("Successfully created .env file")
+	godotenv.Load()
 }
 
 // checks env file
@@ -110,12 +105,9 @@ func main() {
 		ListOptions: reddit.ListOptions{
 			Limit: postLimit,
 		},
-		Time: "all",
+		Time: "all", // sorts by all time
 	})
-	if err != nil {
-		//fmt.Println(err)
-		log.Fatal(err)
-	}
+	check(err)
 
 	for _, post := range posts {
 		if *title {
