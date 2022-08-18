@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -22,12 +23,47 @@ func check(e error) {
 		panic(e)
 	}
 }
+func envFill() {
+	fmt.Print("Please enter your reddit Client ID: ")
+	var clientID string
+	fmt.Scanln(&clientID)
+
+	fmt.Print("Please enter your reddit Client Secret: ")
+	var clientSecret string
+	fmt.Scanln(&clientSecret)
+
+	fmt.Print("Please enter your reddit Username: ")
+	var username string
+	fmt.Scanln(&username)
+
+	fmt.Print("Please enter your reddit Password: ")
+	var password string
+	fmt.Scanln(&password)
+	fmt.Println("")
+	f, err := os.Create(".env")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer f.Close()
+	_, err2 := f.WriteString("client_id=" + clientID + "\n" + "client_secret=" + clientSecret + "\n" + "username=" + username + "\n" + "password=" + password)
+	if err2 != nil {
+		log.Fatal(err)
+	}
+	if err == nil {
+		log.Println("Successfully created .env file")
+		godotenv.Load()
+	}
+
+}
 
 // checks env file
 func init() {
 	err := godotenv.Load()
 	if err != nil {
-		fmt.Println("Error loading .env file")
+		// if no env file found, create new
+		log.Println("Error loading .env file")
+		envFill()
+
 	}
 }
 
@@ -77,7 +113,8 @@ func main() {
 		Time: "all",
 	})
 	if err != nil {
-		fmt.Println(err)
+		//fmt.Println(err)
+		log.Fatal(err)
 	}
 
 	for _, post := range posts {
@@ -123,6 +160,5 @@ func helpMessage() {
 	check(err)
 	fmt.Println(string(dat))
 	fmt.Println(progVersion[1])
-
 	os.Exit(0)
 }
